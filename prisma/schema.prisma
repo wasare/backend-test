@@ -1,0 +1,60 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  password  String?
+  is_admin  Boolean  @default(false)
+  image     String?
+  orders    Order[]  // A user can have multiple orders
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pizza {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  image       String?
+  enabled     Boolean  @default(true)
+  featured    Boolean  @default(false)
+  orderPizzas OrderPizza[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  totalPrice      Float
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  user            User?       @relation(fields: [userId], references: [id])
+  userId          Int?
+  orderPizzas     OrderPizza[]
+  status          String     @default("Aguardando")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model OrderPizza {
+  orderId Int
+  pizzaId Int
+  quantity Int
+  subtotal Float
+  
+  order   Order  @relation(fields: [orderId], references: [id])
+  pizza   Pizza  @relation(fields: [pizzaId], references: [id])
+
+  @@id([orderId, pizzaId])
+}
