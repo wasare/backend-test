@@ -9,7 +9,7 @@ async function pizzasData() {
       const pizzas = [
         {
           name: "Margherita",
-          description: "Molho de tomate, mussarela e manjericão.",
+          description: "Molho de tomate, mussarela, manjericão, azeite",
           price: 25.99,
           image: "https://foodish-api.com/images/pizza/pizza51.jpg",
           enabled: true,
@@ -17,7 +17,7 @@ async function pizzasData() {
         },
         {
           name: "Pepperoni",
-          description: "Molho de tomate, mussarela e pepperoni.",
+          description: "Molho de tomate, mussarela, pepperoni",
           price: 29.99,
           image: "https://foodish-api.com/images/pizza/pizza94.jpg",
           enabled: true,
@@ -25,7 +25,7 @@ async function pizzasData() {
         },
         {
           name: "Quatro Queijos",
-          description: "Molho de tomate e uma mistura de quatro queijos.",
+          description: "Molho de tomate, quatro queijos",
           price: 32.99,
           image: "https://foodish-api.com/images/pizza/pizza89.jpg",
           enabled: true,
@@ -33,7 +33,7 @@ async function pizzasData() {
         },
         {
           name: "Frango com Catupiry",
-          description: "Molho de tomate, frango desfiado e catupiry.",
+          description: "Molho de tomate, frango desfiado, catupiry",
           price: 34.99,
           image: "https://foodish-api.com/images/pizza/pizza22.jpg",
           enabled: true,
@@ -41,7 +41,7 @@ async function pizzasData() {
         },
         {
           name: "Calabresa",
-          description: "Molho de tomate, mussarela e calabresa fatiada.",
+          description: "Molho de tomate, mussarela, calabresa fatiada",
           price: 28.99,
           image: "https://foodish-api.com/images/pizza/pizza66.jpg",
           enabled: true,
@@ -49,7 +49,7 @@ async function pizzasData() {
         },
         {
           name: "Portuguesa",
-          description: "Molho de tomate, presunto, ovos, cebola e azeitonas.",
+          description: "Molho de tomate, presunto, ovos, cebola, azeitonas",
           price: 30.99,
           image: "https://foodish-api.com/images/pizza/pizza74.jpg",
           enabled: false,
@@ -57,7 +57,7 @@ async function pizzasData() {
         },
         {
           name: "Vegetariana",
-          description: "Molho de tomate, cogumelos, abobrinha e pimentão.",
+          description: "Molho de tomate, cogumelos, abobrinha, pimentão",
           price: 27.99,
           image: "https://foodish-api.com/images/pizza/pizza77.jpg",
           enabled: true,
@@ -65,7 +65,7 @@ async function pizzasData() {
         },
         {
           name: "Almôndegas",
-          description: "Molho de tomate, mussarela e almôndegas.",
+          description: "Molho de tomate, mussarela, almôndegas",
           price: 22.99,
           image: "https://foodish-api.com/images/pizza/pizza79.jpg",
           enabled: true,
@@ -73,7 +73,7 @@ async function pizzasData() {
         },
         {
           name: "Palmito",
-          description: "Molho de tomate, mussarela e palmito.",
+          description: "Molho de tomate, mussarela, palmito",
           price: 31.99,
           image: "https://foodish-api.com/images/pizza/pizza94.jpg",
           enabled: false,
@@ -81,7 +81,7 @@ async function pizzasData() {
         },
         {
           name: "Carbonara",
-          description: "Molho de tomate, bacon, ovos e queijo parmesão.",
+          description: "Molho de tomate, bacon, ovos, queijo parmesão",
           price: 35.99,
           image: "https://foodish-api.com/images/pizza/pizza81.jpg",
           enabled: true,
