@@ -58,20 +58,30 @@ router.post('/', async (req, res) => { // arrow function
       quantity: pizza.quantity,
       subtotal: pizza.price * pizza.quantity
     }));
-
+    let userId = null;
+    if ('customerId' in data) {
+      userId = data.customerId;
+    }
     const order = await prisma.order.create({
       data: {
         totalPrice,
         customerName: data.customerName,
         customerPhone: data.customerPhone,
         customerAddress: data.customerAddress,
-        userId: null,
+        userId,
         orderPizzas: {
           create: orderPizzas
         },
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            image: true
+          }
+        },
         orderPizzas: {
           include: {
             pizza: {
