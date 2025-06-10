@@ -9,7 +9,7 @@ const cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var pizzasRouter = require('./routes/pizzas');
+var catalogRouter = require('./routes/catalog');
 var ordersRouter = require('./routes/orders');
 var assetsRouter = require('./routes/assets');
 
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/pizzas', pizzasRouter);
+app.use('/api/catalog', catalogRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/assets', assetsRouter);
 

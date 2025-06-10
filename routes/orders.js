@@ -6,7 +6,7 @@ const prisma = require('../services/prisma');
 const { authenticateToken } = require('../middleware/auth');
 const { exceptionHandler, fileHandler } = require('../services/handlers');
 
-const orderStatus = ['Aguardando', 'Em Produção', 'A Caminho', 'Entregue', 'Cancelado'];
+const orderStatus = ['Aguardando', 'Em Preparação', 'A Caminho', 'Entregue', 'Cancelado'];
 
 /* GET /api/orders - Lista todos os pedidos com paginação de 10 em 10. */
 router.get('/', authenticateToken, async (req, res) =>{
@@ -18,9 +18,9 @@ router.get('/', authenticateToken, async (req, res) =>{
       skip: (page - 1) * ITEMS_PER_PAGE,
       include: {
         user: true,
-        orderPizzas: {
+        orderOffering: {
           include: {
-            pizza: {
+            offering: {
               select: {
                 name: true,
                 description: true,
@@ -46,16 +46,16 @@ router.get('/', authenticateToken, async (req, res) =>{
   }
 });
 
-/* POST /api/orders - Cria um pedido de pizza */
+/* POST /api/orders - Cria um pedido */
 router.post('/', async (req, res) => { // arrow function
   const data = req.body;
   console.log(data);
   try {
-    const totalPrice = data.pizzas.reduce((total, pizza) => total + pizza.price * pizza.quantity, 0);
-    const orderPizzas = data.pizzas.map(pizza => ({
-      pizzaId: pizza.id,
-      quantity: pizza.quantity,
-      subtotal: pizza.price * pizza.quantity
+    const totalPrice = data.items.reduce((total, item) => total + item.price * item.quantity, 0);
+    const orderOffering = data.items.map(item => ({
+      offeringId: item.id,
+      quantity: item.quantity,
+      subtotal: item.price * item.quantity
     }));
     let userId = null;
     if ('customerId' in data) {
@@ -68,8 +68,8 @@ router.post('/', async (req, res) => { // arrow function
         customerPhone: data.customerPhone,
         customerAddress: data.customerAddress,
         userId,
-        orderPizzas: {
-          create: orderPizzas
+        orderOffering: {
+          create: orderOffering
         },
       },
       include: {
@@ -81,9 +81,9 @@ router.post('/', async (req, res) => { // arrow function
             image: true
           }
         },
-        orderPizzas: {
+        orderOffering: {
           include: {
-            pizza: {
+            offering: {
               select: {
                 name: true,
                 description: true,
@@ -112,9 +112,9 @@ router.get('/:id', authenticateToken, async (req, res) => {
       },
       include: {
         user: true,
-        orderPizzas: {
+        orderOffering: {
           include: {
-            pizza: {
+            offering: {
               select: {
                 name: true,
                 description: true,
@@ -144,9 +144,9 @@ router.get('/:id/:customerPhone', async (req, res) => {
       },
       include: {
         user: true,
-        orderPizzas: {
+        orderOffering: {
           include: {
-            pizza: {
+            offering: {
               select: {
                 name: true,
                 description: true,
@@ -181,9 +181,9 @@ router.patch('/:id', authenticateToken, async (req, res) => {
         data: { status },
         include: {
           user: true,
-          orderPizzas: {
+          orderOffering: {
             include: {
-              pizza: {
+              offering: {
                 select: {
                   name: true,
                   description: true,

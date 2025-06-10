@@ -2,11 +2,11 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient({errorFormat: "minimal"});
 const bcrypt = require('bcryptjs');
 
-async function pizzasData() {
-    const pizzaCount = await prisma.pizza.count();
+async function offeringData() {
+    const offeringItemCount = await prisma.offering.count();
 
-    if (pizzaCount === 0) {
-      const pizzas = [
+    if (offeringItemCount === 0) {
+      const offeringItems = [
         {
           name: "Margherita",
           description: "Molho de tomate, mussarela, manjericão, azeite",
@@ -89,17 +89,17 @@ async function pizzasData() {
         }
       ];
 
-      await prisma.pizza.createMany({
-        data: pizzas,
+      await prisma.offering.createMany({
+        data: offeringItems,
       });
 
-      console.log('Pizzas criadas com sucesso!');
+      console.log('Ofertas criadas com sucesso!');
     } else {
-      console.log('A tabela de pizzas já contém registros.');
+      console.log('A tabela de ofertas já contém registros.');
     }
 }
 
-pizzasData();
+offeringData();
 
 async function userData() {
   const userCount = await prisma.user.count();

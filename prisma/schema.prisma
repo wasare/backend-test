@@ -20,61 +20,64 @@ model User {
   password  String?
   is_admin  Boolean  @default(false)
   image     String?
-  orders    Order[]  // A user can have multiple orders
+  orders    Order[] // A user can have multiple orders
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   assets    Asset[]
 }
 
-model Pizza {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  price       Float
-  image       String?
-  enabled     Boolean  @default(true)
-  featured    Boolean  @default(false)
-  orderPizzas OrderPizza[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Offering {
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String
+  price         Float
+  image         String?
+  assets        Asset[]
+  enabled       Boolean         @default(true)
+  featured      Boolean         @default(false)
+  orderOffering OrderOffering[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
 
 model Order {
-  id              Int         @id @default(autoincrement())
+  id              Int             @id @default(autoincrement())
   totalPrice      Float
   customerName    String
   customerPhone   String
   customerAddress String
-  user            User?       @relation(fields: [userId], references: [id])
+  user            User?           @relation(fields: [userId], references: [id])
   userId          Int?
-  orderPizzas     OrderPizza[]
-  status          String     @default("Aguardando")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  orderOffering   OrderOffering[]
+  status          String          @default("Aguardando")
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
-model OrderPizza {
-  orderId Int
-  pizzaId Int
-  quantity Int
-  subtotal Float
-  
-  order   Order  @relation(fields: [orderId], references: [id])
-  pizza   Pizza  @relation(fields: [pizzaId], references: [id])
+model OrderOffering {
+  orderId    Int
+  offeringId Int
+  quantity   Int
+  subtotal   Float
 
-  @@id([orderId, pizzaId])
+  order    Order    @relation(fields: [orderId], references: [id])
+  offering Offering @relation(fields: [offeringId], references: [id])
+
+  @@id([orderId, offeringId])
 }
 
 model Asset {
-  id          String     @id @default(uuid())
-  filename    String
-  mimetype    String
-  size        Int
-  path        String
-  visibility  Visibility @default(PRIVATE)
-  uploadedAt  DateTime   @default(now())
-  uploadedBy  User?      @relation(fields: [uploadedById], references: [id])
+  id           String     @id @default(uuid())
+  filename     String
+  mimetype     String
+  size         Int
+  path         String
+  visibility   Visibility @default(PRIVATE)
+  uploadedAt   DateTime   @default(now())
+  uploadedBy   User?      @relation(fields: [uploadedById], references: [id])
   uploadedById Int?
+  Offering     Offering?  @relation(fields: [offeringId], references: [id])
+  offeringId   Int?
 
   @@index([visibility])
 }
