@@ -8,6 +8,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -18,6 +23,7 @@ model User {
   orders    Order[]  // A user can have multiple orders
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  media    Media[]
 }
 
 model Pizza {
@@ -57,4 +63,18 @@ model OrderPizza {
   pizza   Pizza  @relation(fields: [pizzaId], references: [id])
 
   @@id([orderId, pizzaId])
+}
+
+model Media {
+  id          String     @id @default(uuid())
+  filename    String
+  mimetype    String
+  size        Int
+  path        String
+  visibility  Visibility @default(PRIVATE)
+  uploadedAt  DateTime   @default(now())
+  uploadedBy  User?      @relation(fields: [uploadedById], references: [id])
+  uploadedById Int?
+
+  @@index([visibility])
 }
