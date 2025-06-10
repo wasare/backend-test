@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient({errorFormat: "minimal"});
+const prisma = require('../services/prisma');
 
-const { authenticateToken } = require('../utils/auth');
-const { exceptionHandler, fileHandler } = require('../utils/handlers');
+const { authenticateToken } = require('../middleware/auth');
+const { exceptionHandler, fileHandler } = require('../services/handlers');
 
 const orderStatus = ['Aguardando', 'Em Produção', 'A Caminho', 'Entregue', 'Cancelado'];
 

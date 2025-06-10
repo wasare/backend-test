@@ -1,13 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient({errorFormat: "minimal"});
+const prisma = require('../services/prisma');
 
-const { exceptionHandler, fileHandler } = require('../utils/handlers');
-const { authenticateToken } = require('../utils/auth');
-const uploadSingle = require('../utils/uploadSingle');
-const uploadPrivate = require('../utils/uploadPrivate');
+const { exceptionHandler, fileHandler } = require('../services/handlers');
+const { authenticateToken } = require('../middleware/auth');
+const uploadSingle = require('../middleware/uploadSingle');
+const uploadPrivate = require('../middleware/uploadPrivate');
 
 /* GET /api/pizzas - Lista todas pizzas com paginação de 10 em 10. */
 router.get('/', async function(req, res) {

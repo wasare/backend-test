@@ -1,14 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient({errorFormat: "minimal"});
+const prisma = require('../services/prisma');
 const bcrypt = require('bcryptjs');
 
-const { exceptionHandler, fileHandler } = require('../utils/handlers');
-const { generateAccessToken, authenticateToken } = require('../utils/auth');
-const uploadSingle = require('../utils/uploadSingle');
-const uploadPrivate = require('../utils/uploadPrivate');
+const { exceptionHandler, fileHandler } = require('../services/handlers');
+const { generateAccessToken, authenticateToken } = require('../middleware/auth');
+const uploadSingle = require('../middleware/uploadSingle');
+const uploadPrivate = require('../middleware/uploadPrivate');
 
 /* GET /api/users - Lista todos os usuários. */
 router.get('/', async function(req, res) {
