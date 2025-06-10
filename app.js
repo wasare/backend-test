@@ -11,7 +11,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var pizzasRouter = require('./routes/pizzas');
 var ordersRouter = require('./routes/orders');
-var mediasRouter = require('./routes/medias');
+var assetsRouter = require('./routes/assets');
 
 var app = express();
 
@@ -27,6 +27,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/users', usersRouter);
 app.use('/api/pizzas', pizzasRouter);
 app.use('/api/orders', ordersRouter);
-app.use('/api/medias', mediasRouter);
+app.use('/api/assets', assetsRouter);
 
 module.exports = app;

@@ -23,7 +23,7 @@ model User {
   orders    Order[]  // A user can have multiple orders
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  media    Media[]
+  assets    Asset[]
 }
 
 model Pizza {
@@ -65,7 +65,7 @@ model OrderPizza {
   @@id([orderId, pizzaId])
 }
 
-model Media {
+model Asset {
   id          String     @id @default(uuid())
   filename    String
   mimetype    String

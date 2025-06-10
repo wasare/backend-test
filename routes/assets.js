@@ -38,7 +38,7 @@ router.post(
         filename:    file.filename,
         mimetype:    file.mimetype,
         size:        file.size,
-        path:        file.path,
+        path:        `uploads/${file.filename}`,
         visibility,
         uploadedBy:  { connect: { id: token.id } },
       }
@@ -76,13 +76,36 @@ router.get('/:id/download', authenticateToken, async (req, res) => {
   const media = await prisma.media.findUnique({ where: { id: req.params.id } });
   if (!media) return res.status(404).json({ error: 'Mídia não encontrada' });
 
-  if (media.visibility === 'PRIVATE' && media.uploadedById !== token.id) {
+  if (media.visibility === 'PRIVATE' && media.uploadedById !== token.id || token.is_admin) {
     return res.status(403).json({ error: 'Acesso negado' });
   }
 
   res.download(media.path, media.filename);
 });
 
+
+router.get('/uploads/:id', authenticateToken, async (req, res) => {
+  const token = req.accessToken;
+  const media = await prisma.media.findUnique({ where: { id: req.params.id } });
+  if (!media) return res.status(404).json({ error: 'Mídia não encontrada' });
+
+  if (media.visibility === 'PRIVATE' && media.uploadedById !== token.id || token.is_admin) {
+    return res.status(403).json({ error: 'Acesso negado' });
+  }
+
+  res.download(media.path, media.filename);
+});
+
+router.get('/uploads/public/:id', async (req, res) => {
+  const media = await prisma.media.findUnique({ where: { id: req.params.id } });
+  if (!media) return res.status(404).json({ error: 'Mídia não encontrada' });
+
+  if (media.visibility === 'PRIVATE') {
+    return res.status(403).json({ error: 'Acesso negado' });
+  }
+
+  res.download(media.path, media.filename);
+});
 
 router.delete('/:id', authenticateToken, async (req, res) => {
   const token = req.accessToken;
