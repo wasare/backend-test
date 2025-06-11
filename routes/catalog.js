@@ -16,6 +16,9 @@ router.get('/', async function(req, res) {
     const catalog = await prisma.offering.findMany({
       take: ITEMS_PER_PAGE,
       skip: (page - 1) * ITEMS_PER_PAGE,
+      include: {
+        assets: true,
+      },
     });
     const totalItems = await prisma.offering.count();
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -45,8 +48,23 @@ router.post('/', authenticateToken, uploadSingle, async (req, res) => { // arrow
     data.image = upload.customPath;
   }
   try {
+    if ('price' in data) {
+      data.price = Number(data.price);
+    }
+    offeringData = data;
+    if ('assetIds' in data) {
+      if (Array.isArray(data.assetIds) && data.assetIds.length > 0) {
+        offeringData.assets = {
+          connect: data.assetIds.map(id => ({ id })),
+        }
+      }
+      delete offeringData.assetIds;
+    }
     const catalogItem = await prisma.offering.create({
-      data: data,
+      data: offeringData,
+      include: {
+        assets: true,
+      },
     });
     res.status(201).json(catalogItem);
   }
