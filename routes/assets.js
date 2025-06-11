@@ -33,7 +33,7 @@ router.post(
     const token = req.accessToken;
     if (!file) return res.status(400).json({ error: 'Arquivo não recebido' });
 
-    const media = await prisma.media.create({
+    const asset = await prisma.asset.create({
       data: {
         filename:    file.filename,
         mimetype:    file.mimetype,
@@ -44,13 +44,13 @@ router.post(
       }
     });
 
-    res.status(201).json(media);
+    res.status(201).json(asset);
   }
 );
 
 
 router.get('/public', async (req, res) => {
-  const list = await prisma.media.findMany({
+  const list = await prisma.asset.findMany({
     where: { visibility: 'PUBLIC' },
     orderBy: { uploadedAt: 'desc' }
   });
@@ -60,7 +60,7 @@ router.get('/public', async (req, res) => {
 
 router.get('/private', authenticateToken, async (req, res) => {
   const token = req.accessToken;
-  const list = await prisma.media.findMany({
+  const list = await prisma.asset.findMany({
     where: {
       visibility: 'PRIVATE',
       uploadedById: token.id
@@ -73,50 +73,50 @@ router.get('/private', authenticateToken, async (req, res) => {
 
 router.get('/:id/download', authenticateToken, async (req, res) => {
   const token = req.accessToken;
-  const media = await prisma.media.findUnique({ where: { id: req.params.id } });
-  if (!media) return res.status(404).json({ error: 'Mídia não encontrada' });
+  const asset = await prisma.asset.findUnique({ where: { id: req.params.id } });
+  if (!asset) return res.status(404).json({ error: 'Asset não encontrado' });
 
-  if (media.visibility === 'PRIVATE' && media.uploadedById !== token.id || token.is_admin) {
+  if (asset.visibility === 'PRIVATE' && asset.uploadedById !== token.id || token.is_admin) {
     return res.status(403).json({ error: 'Acesso negado' });
   }
 
-  res.download(media.path, media.filename);
+  res.download(asset.path, asset.filename);
 });
 
 
 router.get('/uploads/:id', authenticateToken, async (req, res) => {
   const token = req.accessToken;
-  const media = await prisma.media.findUnique({ where: { id: req.params.id } });
-  if (!media) return res.status(404).json({ error: 'Mídia não encontrada' });
+  const asset = await prisma.asset.findUnique({ where: { id: req.params.id } });
+  if (!asset) return res.status(404).json({ error: 'Mídia não encontrada' });
 
-  if (media.visibility === 'PRIVATE' && media.uploadedById !== token.id || token.is_admin) {
+  if (asset.visibility === 'PRIVATE' && asset.uploadedById !== token.id || token.is_admin) {
     return res.status(403).json({ error: 'Acesso negado' });
   }
 
-  res.download(media.path, media.filename);
+  res.download(asset.path, asset.filename);
 });
 
 router.get('/uploads/public/:id', async (req, res) => {
-  const media = await prisma.media.findUnique({ where: { id: req.params.id } });
-  if (!media) return res.status(404).json({ error: 'Mídia não encontrada' });
+  const asset = await prisma.asset.findUnique({ where: { id: req.params.id } });
+  if (!asset) return res.status(404).json({ error: 'Mídia não encontrada' });
 
-  if (media.visibility === 'PRIVATE') {
+  if (asset.visibility === 'PRIVATE') {
     return res.status(403).json({ error: 'Acesso negado' });
   }
 
-  res.download(media.path, media.filename);
+  res.download(asset.path, asset.filename);
 });
 
 router.delete('/:id', authenticateToken, async (req, res) => {
   const token = req.accessToken;
-  const media = await prisma.media.findUnique({ where: { id: req.params.id } });
-  if (!media) return res.status(404).json({ error: 'Mídia não encontrada' });
-  if (media.uploadedById !== token.id)
+  const asset = await prisma.asset.findUnique({ where: { id: req.params.id } });
+  if (!asset) return res.status(404).json({ error: 'Mídia não encontrada' });
+  if (asset.uploadedById !== token.id)
     return res.status(403).json({ error: 'Acesso negado' });
 
-  fs.unlinkSync(media.path);
+  fs.unlinkSync(asset.path);
 
-  await prisma.media.delete({ where: { id: req.params.id } });
+  await prisma.asset.delete({ where: { id: req.params.id } });
   res.status(204).send();
 });
 
