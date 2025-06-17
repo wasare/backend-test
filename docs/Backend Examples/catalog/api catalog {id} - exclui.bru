@@ -1,0 +1,19 @@
+meta {
+  name: api catalog {id} - exclui
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://{{BASE_URL}}/api/catalog/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 1
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
