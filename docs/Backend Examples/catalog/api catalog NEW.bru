@@ -1,0 +1,30 @@
+meta {
+  name: api catalog NEW
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://{{BASE_URL}}/api/catalog
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+    "name": "Oferta",
+    "description": "teste",
+    "price": 10.9
+  }
+}
+
+body:multipart-form {
+  name: Oferta 1
+  description: Melhor oferta do dia
+  price: 14.99
+  file: @file(C:\Users\cg102933\Downloads\pizza51.jpg)
+}
