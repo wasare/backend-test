@@ -13,7 +13,7 @@ router.get('/', async function(req, res) {
   const ITEMS_PER_PAGE = 10;
   const page = Number(req.query.page) || 1;
   try {
-    const catalog = await prisma.offering.findMany({
+    const catalogItems = await prisma.offering.findMany({
       take: ITEMS_PER_PAGE,
       skip: (page - 1) * ITEMS_PER_PAGE,
       include: {
@@ -22,6 +22,14 @@ router.get('/', async function(req, res) {
     });
     const totalItems = await prisma.offering.count();
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+    const catalog = await Promise.all(
+      catalogItems.map(async item => ({
+        ...item,
+        image: await fileHandler(req, item)
+      }))
+    );
+
     res.json({
       catalog,
       page,

@@ -6,7 +6,9 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "test": "jest",
-    "load_data": "node ./services/scripts/loadData.js"
+    "load_data": "node ./services/scripts/loadData.js",
+    "load_data:pizza": "node ./services/scripts/loadData.js --pizza",
+    "delete_data": "node ./services/scripts/deleteData.js"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",
