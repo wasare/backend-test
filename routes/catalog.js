@@ -14,13 +14,20 @@ router.get('/', async function(req, res) {
   const page = Number(req.query.page) || 1;
   try {
     const catalogItems = await prisma.offering.findMany({
+      where: {
+        enabled: true,
+      },
       take: ITEMS_PER_PAGE,
       skip: (page - 1) * ITEMS_PER_PAGE,
       include: {
         assets: true,
       },
     });
-    const totalItems = await prisma.offering.count();
+    const totalItems = await prisma.offering.count({
+      where: {
+        enabled: true,
+      }
+    });
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
     const catalog = await Promise.all(
@@ -137,6 +144,48 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     });
     res.status(204).end();  // 204 No content
     
+  }
+  catch (exception) {
+    exceptionHandler(exception, res);
+  }
+});
+
+/* GET /api/catalog/disabled - Lista todas as ofertas desativadas com paginação de 10 em 10. */
+router.get('/offers/:enabled', async function(req, res) {
+  const ITEMS_PER_PAGE = 10;
+  const page = Number(req.query.page) || 1;
+  const enabled = Boolean(Number(req.params.enabled));
+  try {
+    const catalogItems = await prisma.offering.findMany({
+      where: {
+        enabled,
+      },
+      take: ITEMS_PER_PAGE,
+      skip: (page - 1) * ITEMS_PER_PAGE,
+      include: {
+        assets: true,
+      },
+    });
+    const totalItems = await prisma.offering.count({
+      where: {
+        enabled,
+      }
+    });
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+    const catalog = await Promise.all(
+      catalogItems.map(async item => ({
+        ...item,
+        image: await fileHandler(req, item)
+      }))
+    );
+
+    res.json({
+      catalog,
+      page,
+      totalPages,
+      totalItems,
+    });
   }
   catch (exception) {
     exceptionHandler(exception, res);

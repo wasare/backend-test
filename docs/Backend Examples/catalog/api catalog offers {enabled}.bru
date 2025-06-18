@@ -1,0 +1,15 @@
+meta {
+  name: api catalog offers {enabled}
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://{{BASE_URL}}/api/catalog/offers/:enabled
+  body: none
+  auth: none
+}
+
+params:path {
+  enabled: 0
+}
