@@ -25,16 +25,23 @@ function exceptionHandler(e, response) {
 
 fileHandler = async (req, data) => {
   const baseUrl = `${req.protocol}://${req.headers.host}`; // http://127.0.0.1:5000
-  if ('image' in data && data.image !== null) {
-    // Imagem pública.
-    imageData = `${baseUrl}/${data.image}`; // http://127.0.0.1:5000 /uploads/nome_image.png
-    if(fs.existsSync(`private/${data.image}`)) {
-      // Imagem privada.
-      imageData = await dataUriFromFile(`private/${data.image}`);
+  let imageData = null;
+  if ('image' in data) {
+    if (data.image !== null) {
+      // Imagem pública.
+      imageData = `${baseUrl}/${data.image}`; // http://127.0.0.1:5000 /uploads/nome_image.png
+      if(fs.existsSync(`private/${data.image}`)) {
+        // Imagem privada.
+        imageData = await dataUriFromFile(`private/${data.image}`);
+      }
+    }
+    else {
+      if (fs.existsSync(`public/uploads/placeholder.png`)) {
+        imageData = `${baseUrl}/uploads/placeholder.png`;
+      }
     }
     return imageData;
   }
-  return null;
 }
 
 dataUriFromFile = async (filepath) => {
