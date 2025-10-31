@@ -7,7 +7,7 @@ const userRoutes = require('../routes/users');
 app.use(express.json());
 app.use('/api/users', userRoutes);
 
-describe('POST - cria um usuário', () => {
+describe('Usuarios', () => {
     let idUser = uuidv4();
 
     // setup do test => preparação
@@ -44,6 +44,12 @@ describe('POST - cria um usuário', () => {
         const response = await request(app).post('/api/users/login').send(userLogin);
         expect(response.statusCode).toBe(200);
     });
+
+        it('Obter o usuario 1 pelo ID', async () => {
+        const response = await request(app).get('/api/users/1');
+        expect(response.statusCode).toBe(200);
+    });
+
 
 });
 
