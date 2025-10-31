@@ -1,0 +1,29 @@
+name: Run tests
+
+on: [ push, pull_request ]
+
+jobs:
+  test:
+    run-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create .env
+        run: echo "DATABASE_URL='file:./dev.db" > .env
+
+      - name: Create prisma client
+        run: npx prisma generate
+      
+      - name: Prisma db push
+        run: npx prisma db push
+
+      - name: Load data
+        run: npm run load_data
+      
+      - name: Run test
+        run: npm test
