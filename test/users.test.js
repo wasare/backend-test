@@ -7,7 +7,7 @@ const userRoutes = require('../routes/users');
 app.use(express.json());
 app.use('/api/users', userRoutes);
 
-describe('POST - cria um usuário', () => {
+describe('Usuários', () => {
     let idUser = uuidv4();
 
     // setup do test => preparação
