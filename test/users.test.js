@@ -22,7 +22,7 @@ describe('Usuários', () => {
         await request(app).delete(`/api/users/${userId}`);
     });
 
-    it('Deve criar um usuário', async () => {
+    it('Deve criar um novo usuário', async () => {
         // let idUser = uuidv4(); // => transferir para o escopo acima /pai
         let userData = {
             "email": `${idUser}@example.com`,
@@ -44,6 +44,12 @@ describe('Usuários', () => {
         const response = await request(app).post('/api/users/login').send(userLogin);
         expect(response.statusCode).toBe(200);
     });
+
+        it('Obter o usuario 1 pelo ID', async () => {
+        const response = await request(app).get('/api/users/1');
+        expect(response.statusCode).toBe(200);
+    });
+
 
     it('Obter o usuário 1 pelo ID', async () => {
         const response = await request(app).get('/api/users/1');

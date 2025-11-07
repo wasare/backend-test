@@ -37,7 +37,7 @@ router.get('/', async function(req, res) {
   }
 });
 
-/* POST /api/users - Cria um usuário */
+/* POST /api/users - Criar um novo usuário */
 router.post('/', uploadPrivate, async (req, res) => { // arrow function
   const data = req.body; // email, name?, password?
   console.log(data);

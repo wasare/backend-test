@@ -13,11 +13,11 @@ jobs:
     - name: install dependencies
       run: npm install
 
-    - name: Create .env
-      run: echo "DATABASE_URL='file:./dev.db" > .env
+    - name: Create .env 
+      run: echo "DATABASE_URL= 'file:./dev.db'" > .env
 
     - name: Include secret key
-      run: echo "SECRET_KEY='YOUR SECRET KEY'"  
+      run: echo "SECRET_KEY='YOUR SECRET KEY'"
 
     - name: Create prisma client
       run: npx prisma generate
