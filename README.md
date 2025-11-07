@@ -1,4 +1,4 @@
-# backend-test's
+# backend-test
 
 * Para iniciar o backend:
 1. Instalar as dependências node.js
